@@ -29,8 +29,13 @@ export default {
         'purple-2': '#711a51',
         'orange': '#f95d2b',
         'orange-2': '#ff6b27',
+        'orange-3': '#ff5b00',
+        'green': '#9ee100',
+        'green-2': '#b3e700',
         'yellow': '#cdeb5d',
         'yellow-2': '#f0ff92',
+        'white': '#ffffff',
+        'white-2': '#eeeeee',
         'white-transparent': 'rgba(255, 255, 255, 0.6)',
       },
       backgroundImage: {
@@ -44,6 +49,10 @@ export default {
       },
       backgroundSize: {
         'default-size': '100px 50px',
+      },
+      borderRadius: {
+        'game-border': '11px',
+        'inherit': "inherit",
       },
     },
   },

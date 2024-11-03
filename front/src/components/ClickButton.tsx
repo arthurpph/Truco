@@ -4,11 +4,10 @@ import clickSound from '../assets/clicksound.mp3';
 interface ClickButtonProps {
     name: string;
     defaultStyles?: string; 
-    clickStyles?: string;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const ClickButton: React.FC<ClickButtonProps> = ({ name, defaultStyles, clickStyles, onClick }) => {
+const ClickButton: React.FC<ClickButtonProps> = ({ name, defaultStyles, onClick }) => {
     const clickSoundAudio = new Audio(clickSound);
     const [isOpaque, setIsOpaque] = useState(false);
 
@@ -21,7 +20,7 @@ const ClickButton: React.FC<ClickButtonProps> = ({ name, defaultStyles, clickSty
     };
 
     return (
-        <button onClick={(event) => { playClickSound(); toggleOpacity(); onClick?.(event); }} className={`${defaultStyles} ${isOpaque && clickStyles != null ? clickStyles : ''}`}>
+        <button onClick={(event) => { playClickSound(); toggleOpacity(); onClick?.(event); }} className={defaultStyles}>
             {name}
         </button>
     );

@@ -5,10 +5,30 @@
     <link rel="icon" type="image/svg+xml" href="./src/assets/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
     <title>Truco</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <style>
+      ::-webkit-scrollbar {
+          width: 12px; 
+      }
+      ::-webkit-scrollbar-track {
+          background: #f1f1f1; 
+      }
+      ::-webkit-scrollbar-thumb {
+          background: #888; 
+          border-radius: 10px; 
+      }
+      ::-webkit-scrollbar-thumb:hover {
+          background: #555; 
+      }
+      .scrollable {
+          scrollbar-width: thin; 
+          scrollbar-color: #888 #f1f1f1; 
+      }
+    </style>
   </body>
 </html>

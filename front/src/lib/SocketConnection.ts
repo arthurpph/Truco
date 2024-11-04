@@ -1,6 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import EventEmitter from 'eventemitter3';
 import constants from '../data/constants.json';
+import { CreateRoomDTO, RoomDTO } from '../types/dtos';
 
 let _instance: SocketConnection;
 
@@ -45,7 +46,7 @@ class SocketConnection {
         this.emitter.once('roomList', callback);
     }
 
-    public createRoom(data: any, callback: (data: any) => void): void {
+    public createRoom(data: CreateRoomDTO, callback: (data: RoomDTO) => void): void {
         this.socket.emit("createRoom", data);
 
         this.emitter.once('roomCreated', callback);

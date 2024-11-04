@@ -12,6 +12,7 @@ const Rooms = () => {
     const requestRoomList = () => {
         const socket = getSocketConnection();
         socket.requestRoomList((data: Room[]) => {
+            console.log(data);
             setRooms(data);
         });
     }

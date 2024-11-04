@@ -37,6 +37,7 @@ export default {
         'blue': '#69e2cb',
         'white': '#ffffff',
         'white-2': '#eeeeee',
+        'white-3': '#dddddd',
         'white-transparent': 'rgba(255, 255, 255, 0.6)',
       },
       backgroundImage: {

@@ -34,6 +34,7 @@ export default {
         'green-2': '#b3e700',
         'yellow': '#cdeb5d',
         'yellow-2': '#f0ff92',
+        'blue': '#69e2cb',
         'white': '#ffffff',
         'white-2': '#eeeeee',
         'white-transparent': 'rgba(255, 255, 255, 0.6)',
@@ -52,6 +53,7 @@ export default {
       },
       borderRadius: {
         'game-border': '11px',
+        'game-border-2': '7px',
         'inherit': "inherit",
       },
     },

@@ -1,18 +1,18 @@
 import { useState } from "react";
 import ClickButton from "../../components/ClickButton";
-import Rooms from "./Rooms";
+import Rooms from "./Rooms/Rooms";
 import AnimatedPage from "../../components/AnimatedPage";
 
 const Home = () => {
-    const [showOtherComponent, setShowOtherComponent] = useState(false);
+    const [showRoomsComponent, setShowRoomsComponent] = useState(false);
 
     const play = (): void => {
-        setShowOtherComponent(true);
+        setShowRoomsComponent(true);
     }
 
     return (
         <>
-            {!showOtherComponent ? (
+            {!showRoomsComponent ? (
                 <div className="flex items-center justify-center w-full h-full">
                     <div className="flex flex-col items-center justify-center gap-4">
                         <label className="w-55 h-[72px] relative flex items-center">
@@ -28,7 +28,7 @@ const Home = () => {
                 </div>
             ) : (
                 <AnimatedPage>
-                    <Rooms/>
+                    <Rooms/> 
                 </AnimatedPage>
             )}
         </>

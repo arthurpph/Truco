@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Game from "./pages/Game";
+import Game from "./pages/Game/Game";
 import getSocketConnection from "./lib/SocketConnection";
 
 const App = () => {

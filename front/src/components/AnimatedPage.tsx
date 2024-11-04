@@ -14,7 +14,7 @@ const AnimatedPage: React.FC<any> = ({ children }) => {
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             className="h-full" 
         >
             {children}

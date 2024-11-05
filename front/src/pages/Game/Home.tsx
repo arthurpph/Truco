@@ -6,11 +6,11 @@ import { useGameBackgroundContext } from "../../contexts/gameBackgroundContext";
 
 const Home = () => {
     const [showRoomsComponent, setShowRoomsComponent] = useState(false);
-    const { username, changeUsername, changeBackground } = useGameBackgroundContext();
+    const { username, setUsername, setBackgroundColor } = useGameBackgroundContext();
 
     useEffect(() => {
-        changeUsername('');
-        changeBackground('bg-orange')
+        setUsername('');
+        setBackgroundColor('bg-orange')
     }, [])
 
     const play = (): void => {
@@ -31,7 +31,7 @@ const Home = () => {
                             <input type="text" className="font-pt-sans font-normal bg-orange-2 text-[32px] text-white w-full h-full 
                                 rounded-[10px] leading-[75px] m-auto p-0 px-2.5 pl-[55px] border border-white 
                                 transition-transform duration-150 ease-linear transform focus:scale-105 focus:outline-none"
-                                onChange={(event) => changeUsername(event.target.value)}
+                                onChange={(event) => setUsername(event.target.value)}
                             />
                         </label>
                         <ClickButton name="Jogar" defaultStyles="animate-btsHome cursor-pointer text-[30px] font-bold bg-yellow text-purple-2 w-full h-[72px] rounded-[10px] tracking-[1px] select-none uppercase active:bg-yellow-2"

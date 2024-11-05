@@ -14,16 +14,8 @@ const Game = () => {
         };
     }, []);
 
-    const changeBackground = (color: string) => {
-        setBackgroundColor(color);
-    };
-
-    const changeUsername = (username: string) => {
-        setUsername(username);
-    }
-
     return (
-        <GameBackgroundContext.Provider value={{ backgroundColor, changeBackground, username, changeUsername }}>
+        <GameBackgroundContext.Provider value={{ backgroundColor, setBackgroundColor, username, setUsername }}>
             <div className="flex items-center justify-center h-full">
                 <div className={`font-pt-sans ${backgroundColor} w-[1400px] h-[768px] border-4 border-[rgba(255,255,255,0.6)] rounded-game-border shadow-[0_9px_0_rgba(0,0,0,0.26)]`}>
                     <Home/>

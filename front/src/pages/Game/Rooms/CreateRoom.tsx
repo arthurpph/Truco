@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import { useGameBackgroundContext } from "../../../contexts/gameBackgroundContext";
 import ClickButton from "../../../components/ClickButton";
 import getSocketConnection from "../../../lib/SocketConnection";
@@ -8,19 +8,22 @@ import AnimatedPage from "../../../components/AnimatedPage";
 import Rooms from "./RoomsList";
 
 const CreateRoom = () => {
-    const [roomName, setRoomName] = useState<string>('');
+    const roomNameRef = useRef<HTMLInputElement>(null);
     const [showRooms, setShowRooms] = useState<boolean>(false);
-    const { backgroundColor, changeBackground, username } = useGameBackgroundContext();
+
+    const { backgroundColor, setBackgroundColor, username } = useGameBackgroundContext();
     const socket = getSocketConnection();
 
     useEffect(() => {
         const previousBackgroundColor = backgroundColor;
-        changeBackground('bg-white-transparent')
+        setBackgroundColor('bg-white-transparent')
 
-        return () => changeBackground(previousBackgroundColor);
+        return () => setBackgroundColor(previousBackgroundColor);
     }, []);
 
     const createRoom = () => {
+        const roomName: string = roomNameRef.current!.value;
+
         if(roomName == '') {
             return;
         }
@@ -48,7 +51,7 @@ const CreateRoom = () => {
                         <input type="text" className="font-pt-sans font-normal bg-white-3 text-[25px] text-gray-500 w-[350px] h-[50px] 
                             rounded-[10px] leading-[75px] pl-[10px] border-2 border-white 
                             transition-transform duration-150 ease-linear transform focus:scale-105 focus:outline-none
-                        " onChange={(event) => setRoomName(event.target.value)}/>
+                        " ref={roomNameRef} />
                         <ClickButton name="Criar" defaultStyles="animate-btsHome cursor-pointer text-[30px] font-bold bg-yellow text-purple-2 w-[350px] h-[72px] rounded-[10px] tracking-[1px] select-none uppercase active:bg-yellow-2"
                             onClick={createRoom}
                         />

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Socket } from "socket.io";
-import { RoomPlayerDTO } from "../dtos/RoomPlayerDTO";
+import { RoomPlayerDTO } from "../dtos/room-player-dto";
 
 class RoomPlayer {
     private static generateId(): string {

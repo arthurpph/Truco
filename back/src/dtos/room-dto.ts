@@ -1,4 +1,4 @@
-import { TeamDTO } from "./TeamDTO";
+import { TeamDTO } from "./team-dto";
 
 export interface RoomDTO {
     id: string;

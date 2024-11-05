@@ -1,5 +1,5 @@
-import Room from "./Room";
-import RoomPlayer from "./RoomPlayer";
+import Room from "./room";
+import RoomPlayer from "./room-player";
 
 class RoomService {
     private rooms: Set<Room>;

@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import RoomService from "../rooms/RoomService";
-import { CreateRoomDTO } from "../dtos/CreateRoomDTO";
-import RoomPlayer from "../rooms/RoomPlayer";
+import { CreateRoomDTO } from "../dtos/create-room-dto";
+import RoomPlayer from "../rooms/room-player";
 
 const rooms = (socket: Socket) => {
     socket.on('getRooms', () => {

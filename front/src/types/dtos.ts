@@ -3,10 +3,14 @@ export interface CreateRoomDTO {
     leaderName: string;
 };
 
+export interface TeamDTO {
+    players: [RoomPlayerDTO, RoomPlayerDTO];
+}
+
 export interface RoomDTO {
     id: string;
     name: string;
-    players: RoomPlayerDTO[];
+    teams: [TeamDTO, TeamDTO];
 };
 
 export interface RoomPlayerDTO {

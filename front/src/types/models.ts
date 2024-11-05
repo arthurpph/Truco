@@ -3,8 +3,13 @@ export interface Player {
     name: string;
 };
 
+export interface Team {
+    id: string;
+    players: [Player, Player];
+}
+
 export interface Room {
     id: string;
     name: string;
-    players: Player[];
+    teams: [Team, Team]
 };

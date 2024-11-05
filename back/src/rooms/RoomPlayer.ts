@@ -5,20 +5,21 @@ import { RoomPlayerDTO } from "../dtos/RoomPlayerDTO";
 class RoomPlayer {
     private static generateId(): string {
         let id: string = uuidv4();
-        while(RoomPlayer.ids.includes(id)) {
+        while(RoomPlayer.IDS.includes(id)) {
             id = uuidv4();
         }
         return id;
     }
 
-    private static ids: string[] = [];
+    private static IDS: string[] = [];
+
     private id: string;
     private name: string;
     private socket: Socket;
 
     constructor(name: string, socket: Socket) {
         this.id = RoomPlayer.generateId();
-        RoomPlayer.ids.push(this.id);
+        RoomPlayer.IDS.push(this.id);
         this.name = name;
         this.socket = socket;
     }

@@ -54,7 +54,7 @@ class RoomService {
 
         room.removePlayer(playerName);
 
-        if(room.getPlayers().size == 0) {
+        if(room.getNumberOfPlayers() == 0) {
             this.rooms.delete(room);
         }
     }

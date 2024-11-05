@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import RoomPlayer from "./room-player";
 import { RoomDTO } from "../dtos/room-dto";
-import Team from "./team";
+import Team from "./Team";
 import constants from '../data/constants.json';
 
 class Room {

@@ -1,4 +1,4 @@
-import Room from "./room";
+import Room from "./Room";
 import RoomPlayer from "./room-player";
 
 class RoomService {

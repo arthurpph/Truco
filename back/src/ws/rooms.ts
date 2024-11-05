@@ -1,5 +1,5 @@
 import { Socket } from "socket.io";
-import RoomService from "../rooms/RoomService";
+import RoomService from "../rooms/room-service";
 import { CreateRoomDTO } from "../dtos/create-room-dto";
 import RoomPlayer from "../rooms/room-player";
 

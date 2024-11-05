@@ -4,15 +4,18 @@ import getSocketConnection from "../../../lib/SocketConnection";
 import { Room } from "../../../types/models";
 import CreateRoom from "./CreateRoom";
 import AnimatedPage from "../../../components/AnimatedPage";
+import LeftSign from "../../../components/LeftSign";
+import ClickDiv from "../../../components/ClickDiv";
+import Home from "../Home";
 
 const Rooms = () => {
     const [rooms, setRooms] = useState<Room[]>([]);
     const [showCreateRoomScreen, setShowCreateRoomScreen] = useState<boolean>(false);
+    const [showHome, setShowHome] = useState<boolean>(false);
 
     const requestRoomList = () => {
         const socket = getSocketConnection();
         socket.requestRoomList((data: Room[]) => {
-            console.log(data);
             setRooms(data);
         });
     }
@@ -27,9 +30,16 @@ const Rooms = () => {
 
     return (
         <>
-            {!showCreateRoomScreen ? (
+            {showHome ? (
+                <AnimatedPage startDirection="left">
+                    <Home/>
+                </AnimatedPage>
+            ) : !showCreateRoomScreen ? (
                 <div className="flex flex-col h-full rounded-game-border select-none">
-                    <div className="flex items-center justify-center bg-orange-3 h-[148px] rounded-t-game-border-2">
+                    <div className="relative flex items-center justify-center bg-orange-3 h-[148px] rounded-t-game-border-2">
+                        <ClickDiv onClick={() => setShowHome(true)} defaultStyles="absolute top-0 left-0 cursor-pointer scale:100 active:scale-110">
+                            <LeftSign/>
+                        </ClickDiv>
                         <h1 className="font-open-sans-semibold font-bold text-white text-[35px] select-none">Salas</h1>
                     </div>
                     <div className="bg-white-2 flex justify-between h-full rounded-b-game-border-2 gap-10">
@@ -66,7 +76,7 @@ const Rooms = () => {
                     </div>
                 </div>
             ) : (
-                <AnimatedPage>
+                <AnimatedPage startDirection="right">
                     <CreateRoom/> 
                 </AnimatedPage>
             )}

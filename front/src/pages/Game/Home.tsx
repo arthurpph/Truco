@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClickButton from "../../components/ClickButton";
-import Rooms from "./Rooms/Rooms";
+import Rooms from "./Rooms/RoomsList";
 import AnimatedPage from "../../components/AnimatedPage";
 import { useGameBackgroundContext } from "../../contexts/gameBackgroundContext";
 
 const Home = () => {
     const [showRoomsComponent, setShowRoomsComponent] = useState(false);
-    const { username, changeUsername } = useGameBackgroundContext();
+    const { username, changeUsername, changeBackground } = useGameBackgroundContext();
+
+    useEffect(() => {
+        changeUsername('');
+        changeBackground('bg-orange')
+    }, [])
 
     const play = (): void => {
         if(username == '') {
@@ -34,7 +39,7 @@ const Home = () => {
                     </div>
                 </div>
             ) : (
-                <AnimatedPage>
+                <AnimatedPage startDirection="right">
                     <Rooms/> 
                 </AnimatedPage>
             )}

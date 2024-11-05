@@ -3,7 +3,6 @@ import http from 'http';
 import { Server, Socket } from "socket.io";
 import fs from "fs";
 import path from "path";
-import { emptyRoomCheck } from './checks/emptyRoomCheck';
 
 const app = express();
 const server = http.createServer(app);
@@ -36,8 +35,6 @@ loadListeners();
 io.on('connection', (socket: Socket) => {
   Object.values(listeners).forEach(listener => listener(socket));
 });
-
-setInterval(emptyRoomCheck, 180000) // 180000 ms == 3 minutes;
 
 server.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');

@@ -45,6 +45,20 @@ class RoomService {
         return this.rooms;
     }
 
+    public removePlayer(playerName: string, roomId: string): void {
+        const room = this.getRoom(roomId);
+
+        if (!room) {
+            throw new Error(`Sala não encontrada.`);
+        }
+
+        room.removePlayer(playerName);
+
+        if(room.getPlayers().size == 0) {
+            this.rooms.delete(room);
+        }
+    }
+
     public isPlayerInARoom(player: RoomPlayer): boolean {
         const player_id: string = player.getId();
 

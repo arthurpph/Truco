@@ -36,6 +36,16 @@ class Room {
         return this.players;
     }
 
+    public removePlayer(playerName: string) {
+        const playerToRemove = Array.from(this.players).find(player => player.getName() === playerName);
+
+        if(!playerToRemove) {
+            throw new Error(`Jogador ${playerName} não encontrado na sala`);
+        }
+
+        this.players.delete(playerToRemove);
+    }
+
     public toDTO(): RoomDTO {
         return {
             id: this.id,

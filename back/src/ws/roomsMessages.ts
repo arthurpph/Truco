@@ -4,10 +4,10 @@ import { CreateRoomDTO } from "../dtos/create-room-dto";
 import RoomPlayer from "../rooms/room-player";
 import { GetRoomDTO } from "../dtos/get-room-dto";
 import { JoinRoomDTO } from "../dtos/join-room-dto";
-import Room from "../rooms/Room";
+import Room from "../rooms/room";
 import { LeaveRoomDTO } from "../dtos/leave-room-dto";
 
-const rooms = (socket: Socket): void => {
+const roomsMessages = (socket: Socket): void => {
     socket.on('getRoom', (data: GetRoomDTO): void => {
         const room = RoomService.getRoom(data.id);
         socket.emit('roomInfo', room ? room.toDTO() : { error: 'Room not found' });
@@ -30,11 +30,17 @@ const rooms = (socket: Socket): void => {
         const room: Room | null = RoomService.getRoom(data.roomId);
 
         if(!room) {
-            throw new Error("Room with the room id provided does not exist");
+            socket.emit("error", {
+                message: "Room with the roomId provided does not exist",
+            });
+            return;
         }
 
         if(!data.playerName) {
-            throw new Error("playerName cannot be null");
+            socket.emit("error", {
+                message: "playerName cannot be null",
+            });
+            return;
         }
 
         room.addPlayer(new RoomPlayer(data.playerName, socket));
@@ -43,18 +49,27 @@ const rooms = (socket: Socket): void => {
     });
 
     socket.on('leaveRoom', (data: LeaveRoomDTO): void => {
-        const room: Room | null = RoomService.getRoom(data.roomId);
+        const roomId = data.roomId;
+        const doesRoomExist: boolean = RoomService.doesRoomExist(roomId);
 
-        if(!room) {
-            throw new Error("Room with the room id provided does not exist");
+        if(!doesRoomExist) {
+            socket.emit("error", {
+                message: "Room with the roomId provided does not exist",
+            });
+            return;
         }
 
         if(!data.playerName) {
-            throw new Error("playerName cannot be null");
+            socket.emit("error", {
+                message: "playerName cannot be null",
+            });
+            return;
         }
 
-        room.removePlayer(data.playerName);
+        RoomService.removePlayer(data.playerName, roomId);
+
+        socket.emit("leftRoom");
     });
 };
 
-export default rooms;
+export default roomsMessages;

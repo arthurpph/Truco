@@ -3,8 +3,32 @@ import RoomPlayer from "./room-player";
 import { RoomDTO } from "../dtos/room-dto";
 import Team from "./team";
 import constants from '../data/constants.json';
+import roomService from "./room-service";
 
 class Room {
+    private checkPlayersConnection(): void {
+        if(this.getNumberOfPlayers() === 0) {
+            // the room was deleted and if the timeout continues it will generate a memory leak here
+            return;
+        }
+
+        const players: RoomPlayer[] = this.getPlayers();
+
+        for(const player of players) {
+            player.getSocket().emit("connectionTest");
+
+            const timeout = setTimeout(() => {
+                roomService.removePlayer(player.getName(), this.id);
+            }, 10000);
+
+            player.getSocket().once("connectionReceived", () => {
+                clearTimeout(timeout);
+            });
+        }
+
+        setTimeout(this.checkPlayersConnection.bind(this), 10000);
+    }
+
     private static generateId(): string {
         let id: string = uuidv4();
         while(Room.IDS.includes(id)) {
@@ -25,6 +49,7 @@ class Room {
         this.name = name;
         this.teams = Array.from({ length: constants.TEAM_MAX_PLAYERS }, () => new Team());
         this.addPlayer(leader);
+        setTimeout(this.checkPlayersConnection.bind(this), 10000);
     }
 
     public getId(): string {

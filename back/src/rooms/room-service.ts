@@ -1,4 +1,4 @@
-import Room from "./Room";
+import Room from "./room";
 import RoomPlayer from "./room-player";
 
 class RoomService {
@@ -76,6 +76,10 @@ class RoomService {
         }
 
         return false;
+    }
+
+    public doesRoomExist(roomId: string): boolean {
+        return this.getRoom(roomId) != null;
     }
 }
 

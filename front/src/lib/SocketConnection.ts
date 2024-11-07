@@ -1,5 +1,4 @@
 import { io, Socket } from 'socket.io-client';
-import EventEmitter from 'eventemitter3';
 import { CreateRoomDTO, JoinRoomDTO, LeaveRoomDTO } from '../types/dtos';
 import { Room } from '../types/models';
 import constants from '../data/constants.json';
@@ -14,7 +13,6 @@ export default function getSocketConnection() {
 }
 
 class SocketConnection {
-    readonly emitter = new EventEmitter();
     private socket: Socket;
 
     constructor(url: string) {

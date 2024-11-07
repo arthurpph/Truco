@@ -6,6 +6,7 @@ import { GetRoomDTO } from "../dtos/get-room-dto";
 import { JoinRoomDTO } from "../dtos/join-room-dto";
 import Room from "../rooms/room";
 import { LeaveRoomDTO } from "../dtos/leave-room-dto";
+import { RoomPlayerRequestDTO } from "../dtos/room-player-dto";
 
 const roomsMessages = (socket: Socket): void => {
     socket.on('getRoom', (data: GetRoomDTO): void => {
@@ -27,7 +28,8 @@ const roomsMessages = (socket: Socket): void => {
     });
 
     socket.on('joinRoom', (data: JoinRoomDTO): void => {
-        const room: Room | null = RoomService.getRoom(data.roomId);
+        const roomId = data.roomId;
+        const room: Room | null = RoomService.getRoom(roomId);
 
         if(!room) {
             socket.emit("error", {
@@ -43,9 +45,9 @@ const roomsMessages = (socket: Socket): void => {
             return;
         }
 
-        room.addPlayer(new RoomPlayer(data.playerName, socket));
+        RoomService.addPlayer(new RoomPlayer(data.playerName, socket), roomId);
 
-        socket.emit("joinedRoom", room);
+        socket.emit("joinedRoom", room.toDTO());
     });
 
     socket.on('leaveRoom', (data: LeaveRoomDTO): void => {
@@ -69,6 +71,27 @@ const roomsMessages = (socket: Socket): void => {
         RoomService.removePlayer(data.playerName, roomId);
 
         socket.emit("leftRoom");
+    });
+
+    socket.on('toggleIsReady', (data: RoomPlayerRequestDTO): void => {
+        if(!data.name) {
+            socket.emit("error", {
+                message: "Player name cannot be null",
+            });
+            return;
+        }
+
+        const playerName: string = data.name;
+        const room: Room | null = RoomService.getRoomFromPlayerName(data.name);
+
+        if(!room) {
+            socket.emit("error", {
+                message: "Player provided is not in a room",
+            });
+            return;
+        }
+
+        RoomService.toggleIsReady(playerName, room.getId());
     });
 };
 

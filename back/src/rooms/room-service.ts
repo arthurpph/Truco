@@ -1,3 +1,4 @@
+import { RoomDTO } from "../dtos/room-dto";
 import Room from "./room";
 import RoomPlayer from "./room-player";
 
@@ -45,8 +46,20 @@ class RoomService {
         return this.rooms;
     }
 
-    public removePlayer(playerName: string, roomId: string): void {
+    public addPlayer(player: RoomPlayer, roomId: string): void {
         const room = this.getRoom(roomId);
+
+        if(!room) {
+            throw new Error("Room with the id provided does not exist");
+        }
+
+        room.addPlayer(player);
+
+        this.updatePlayersRoomData(room, player.getId());
+    }
+
+    public removePlayer(playerName: string, roomId: string): void {
+        const room: Room | null = this.getRoom(roomId);
 
         if (!room) {
             throw new Error(`Sala não encontrada.`);
@@ -56,19 +69,73 @@ class RoomService {
 
         if(room.getNumberOfPlayers() == 0) {
             this.rooms.delete(room);
+            return;
         }
+
+        this.updatePlayersRoomData(room)
     }
 
-    public isPlayerInARoom(player: RoomPlayer): boolean {
-        const player_id: string = player.getId();
+    public getRoomFromPlayerName(playerName: string): Room | null {
+        if(!this.isPlayerInARoom) {
+            return null;
+        }
 
+        for(const room of this.rooms) {
+            const players = room.getPlayers();
+
+            for(const roomPlayer of players) {
+
+                if(roomPlayer.getName() === playerName) {
+                    return room;
+                }
+
+            } 
+        }
+
+        return null;
+    }
+
+    public getPlayerFromPlayerName(playerName: string): RoomPlayer | null {
+        const playerRoom: Room | null = this.getRoomFromPlayerName(playerName);
+
+        if(!playerRoom) {
+            return null;
+        }
+
+        const player: RoomPlayer | undefined = playerRoom.getPlayers().find(player => player.getName() === playerName);
+        
+        if(!player) {
+            return null;
+        }
+        
+        return player;
+    }
+
+    public toggleIsReady(playerName: string, roomId: string): void {
+        const room: Room | null = this.getRoom(roomId);
+
+        if(!room) {
+            throw new Error("Sala não encontrada.");
+        }
+
+        const player: RoomPlayer | null = this.getPlayerFromPlayerName(playerName);
+
+        if(!player) {
+            throw new Error("Jogador não encontrado");
+        }
+
+        player.toggleIsReady();
+        this.updatePlayersRoomData(room);
+    }
+
+    public isPlayerInARoom(playerName: string): boolean {
         for(const room of this.rooms) {
 
             const players = room.getPlayers();
 
             for(const roomPlayer of players) {
 
-                if(roomPlayer.getId() === player_id) {
+                if(roomPlayer.getName() === playerName) {
                     return true;
                 }
 
@@ -80,6 +147,18 @@ class RoomService {
 
     public doesRoomExist(roomId: string): boolean {
         return this.getRoom(roomId) != null;
+    }
+
+    public updatePlayersRoomData(room: Room, excludedPlayerId?: string): void {
+        const roomDataUpdatedDTO: RoomDTO = room.toDTO();
+
+        room.getPlayers().forEach(roomPlayer => {
+            if(excludedPlayerId && roomPlayer.getId() === excludedPlayerId) {
+                return;
+            }
+
+            roomPlayer.getSocket().emit("roomDataUpdated", roomDataUpdatedDTO);
+        });
     }
 }
 

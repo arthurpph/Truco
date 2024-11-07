@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Socket } from "socket.io";
-import { RoomPlayerDTO } from "../dtos/room-player-dto";
+import { RoomPlayerResponseDTO } from "../dtos/room-player-dto";
 
 class RoomPlayer {
     private static generateId(): string {
@@ -15,12 +15,14 @@ class RoomPlayer {
 
     private id: string;
     private name: string;
+    private isReady: boolean;
     private socket: Socket;
 
     constructor(name: string, socket: Socket) {
         this.id = RoomPlayer.generateId();
         RoomPlayer.IDS.push(this.id);
         this.name = name;
+        this.isReady = false;
         this.socket = socket;
     }
 
@@ -32,14 +34,23 @@ class RoomPlayer {
         return this.name;
     }
 
+    public getIsReady(): boolean {
+        return this.isReady;
+    }
+
     public getSocket(): Socket {
         return this.socket;
     }
 
-    public toDTO(): RoomPlayerDTO {
+    public toggleIsReady(): void {
+        this.isReady = !this.isReady;
+    }
+
+    public toDTO(): RoomPlayerResponseDTO {
         return {
             id: this.id,
             name: this.name,
+            isReady: this.isReady,
         };
     }
 }

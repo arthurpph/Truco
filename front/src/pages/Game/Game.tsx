@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import Home from "./Home";
 import { GameBackgroundContext } from "../../contexts/gameBackgroundContext";
-import constants from "../../data/constants.json";
 
 const Game = () => {
-    const [backgroundColor, setBackgroundColor] = useState<string>(constants.DEFAULT_GAME_BACKGROUND_COLOR);
+    const [backgroundColor, setBackgroundColor] = useState<string>('bg-orange');
     const [username, setUsername] = useState<string>('');
 
     const setDefaultBackgroundColor = () => {
-        setBackgroundColor(constants.DEFAULT_GAME_BACKGROUND_COLOR);
+        setBackgroundColor('bg-orange');
     }
 
     useEffect(() => {

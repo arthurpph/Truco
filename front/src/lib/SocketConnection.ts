@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { CreateRoomDTO, JoinRoomDTO, LeaveRoomDTO } from '../types/dtos';
+import { CreateRoomDTO, JoinRoomDTO, LeaveRoomDTO, RoomPlayerResponseDTO } from '../types/dtos';
 import { Room } from '../types/models';
 import constants from '../data/constants.json';
 
@@ -25,6 +25,10 @@ class SocketConnection {
         this.socket.on("error", (_) => {
             window.location.reload();
         });
+    }
+
+    public getSocketObject(): Socket {
+        return this.socket;
     }
 
     public requestRoomInfo(data: { id: string }, callback: (data: Room) => void): void {
@@ -61,5 +65,9 @@ class SocketConnection {
         if(callback) {
             this.socket.once("leftRoom", callback);
         }
+    }
+
+    public toggleIsReady(data: RoomPlayerResponseDTO): void {
+        this.socket.emit("toggleIsReady", data);
     }
 }

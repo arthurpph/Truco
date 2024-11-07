@@ -14,7 +14,7 @@ const Home = () => {
         setDefaultBackgroundColor();
     }, [])
 
-    const play = (): void => {
+    const handlePlayClick = (): void => {
         if(username == '') {
             return;
         }
@@ -38,7 +38,7 @@ const Home = () => {
                                     />
                                 </label>
                                 <ClickButton name="Jogar" defaultStyles="animate-btsHome cursor-pointer text-[30px] font-bold bg-yellow text-purple-2 w-full h-[72px] rounded-[10px] tracking-[1px] select-none uppercase active:bg-yellow-2"
-                                onClick={play}/>
+                                onClick={handlePlayClick}/>
                             </div>
                         </div>
                     </AnimatedPage>

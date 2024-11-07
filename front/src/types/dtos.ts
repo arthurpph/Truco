@@ -4,7 +4,7 @@ export interface CreateRoomDTO {
 };
 
 export interface TeamDTO {
-    players: [RoomPlayerDTO, RoomPlayerDTO];
+    players: [RoomPlayerRequestDTO, RoomPlayerRequestDTO];
 }
 
 export interface RoomDTO {
@@ -13,9 +13,14 @@ export interface RoomDTO {
     teams: [TeamDTO, TeamDTO];
 };
 
-export interface RoomPlayerDTO {
+export interface RoomPlayerResponseDTO {
+    name: string;
+}
+
+export interface RoomPlayerRequestDTO {
     id: string;
     name: string;
+    isReady: boolean;
 };
 
 export interface JoinRoomDTO {

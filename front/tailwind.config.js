@@ -34,10 +34,11 @@ export default {
         'green-2': '#b3e700',
         'yellow': '#cdeb5d',
         'yellow-2': '#f0ff92',
-        'blue': '#69e2cb',
+        'blue': '#08e4bc',
         'white': '#ffffff',
         'white-2': '#eeeeee',
         'white-3': '#dddddd',
+        'light-gray': '#bbbbbb',
         'white-transparent': 'rgba(255, 255, 255, 0.6)',
       },
       backgroundImage: {

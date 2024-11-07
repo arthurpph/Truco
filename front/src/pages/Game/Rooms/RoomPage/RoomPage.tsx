@@ -8,6 +8,9 @@ import ClickDiv from "../../../../components/ClickDiv";
 import LeftSign from "../../../../components/LeftSign";
 import AnimatedPage from "../../../../components/AnimatedPage";
 import RoomsList from "../RoomsList";
+import { Socket } from "socket.io-client";
+import { RoomDTO } from "../../../../types/dtos";
+import ClickButton from "../../../../components/ClickButton";
 
 interface RoomPageProps {
     roomId: string | undefined;
@@ -40,6 +43,12 @@ const RoomPage: React.FC<RoomPageProps> = ({ roomId }) => {
         leaveRoom(roomId);
     }
 
+    const handleToggleIsReady = () => {
+        socket.toggleIsReady({
+            name: username,
+        });
+    }
+
     const leaveRoom = (roomId: string) => {
         socket.leaveRoom({
             roomId,
@@ -53,7 +62,14 @@ const RoomPage: React.FC<RoomPageProps> = ({ roomId }) => {
         setBackgroundColor('white');
         fetchRoomData();
 
+        const socketObject: Socket = socket.getSocketObject();
+
+        socketObject.on("roomDataUpdated", (roomData: RoomDTO) => {
+            setRoomData(roomData as Room);
+        });
+
         return () => {
+            socketObject.off("roomDataUpdated");
             setDefaultBackgroundColor();
         }
     }, []);
@@ -86,9 +102,12 @@ const RoomPage: React.FC<RoomPageProps> = ({ roomId }) => {
                                     </ClickDiv>
                                     <h2>{roomData.name}</h2>
                                 </div>
-                                <TeamSection team={roomData.teams[0]} />
-                                <TeamSection team={roomData.teams[1]} />
-                                <div className="bg-white-2 w-full h-[34%]">
+                                <TeamSection team={roomData.teams[0]} backgroundColor="bg-white-2"/>
+                                <TeamSection team={roomData.teams[1]} backgroundColor="bg-white"/>
+                                <div className="flex flex-col items-center justify-center bg-white-2 w-full h-[34%]">
+                                    <ClickButton name="Estou pronto" defaultStyles="bg-blue w-[300px] h-[80px] text-[25px] text-white font-bold uppercase rounded-[10px] active:scale-110"
+                                        onClick={handleToggleIsReady}
+                                    />
                                 </div>
                             </div>
                         )}

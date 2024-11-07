@@ -3,6 +3,7 @@ import { createContext, useContext } from "react";
 interface GameBackgroundContextType {
     backgroundColor: string;
     setBackgroundColor: (color: string) => void;
+    setDefaultBackgroundColor: () => void;
     username: string;
     setUsername: (username: string) => void;
 };

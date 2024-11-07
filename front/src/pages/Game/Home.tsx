@@ -7,11 +7,11 @@ import { AnimatePresence } from "framer-motion";
 
 const Home = () => {
     const [showRoomsComponent, setShowRoomsComponent] = useState(false);
-    const { username, setUsername, setBackgroundColor } = useGameBackgroundContext();
+    const { username, setUsername, setDefaultBackgroundColor } = useGameBackgroundContext();
 
     useEffect(() => {
         setUsername('');
-        setBackgroundColor('bg-orange')
+        setDefaultBackgroundColor();
     }, [])
 
     const play = (): void => {

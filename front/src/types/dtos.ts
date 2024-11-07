@@ -17,3 +17,13 @@ export interface RoomPlayerDTO {
     id: string;
     name: string;
 };
+
+export interface JoinRoomDTO {
+    roomId: string;
+    playerName: string;
+};
+
+export interface LeaveRoomDTO {
+    roomId: string;
+    playerName: string;
+};

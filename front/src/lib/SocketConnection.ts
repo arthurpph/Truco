@@ -1,7 +1,8 @@
 import { io, Socket } from 'socket.io-client';
 import EventEmitter from 'eventemitter3';
+import { CreateRoomDTO, JoinRoomDTO, LeaveRoomDTO } from '../types/dtos';
+import { Room } from '../types/models';
 import constants from '../data/constants.json';
-import { CreateRoomDTO, RoomDTO } from '../types/dtos';
 
 let _instance: SocketConnection;
 
@@ -19,36 +20,48 @@ class SocketConnection {
     constructor(url: string) {
         this.socket = io(url);
 
-        this.socket.on('connect', () => {
-            this.emitter.emit('socket.open');
+        this.socket.on("connectionTest", () => {
+            this.socket.emit("connectionReceived");
         });
 
-        this.socket.on('disconnect', () => {
-            this.emitter.emit('socket.closed');
-        });
-
-        this.socket.on('roomList', (data) => {
-            this.emitter.emit('roomList', data);
-        });
-
-        this.socket.on('roomCreated', (data) => {
-            this.emitter.emit('roomCreated', data);
-        });
-
-        this.socket.on('error', (error) => {
-            console.warn('SocketConnection.onerror', error);
+        this.socket.on("error", (_) => {
+            window.location.reload();
         });
     }
 
-    public requestRoomList(callback: (data: any) => void): void {
+    public requestRoomInfo(data: { id: string }, callback: (data: Room) => void): void {
+        this.socket.emit("getRoom", data);
+
+        this.socket.once("roomInfo", callback);
+    }
+
+    public requestRoomList(callback: (data: Room[]) => void): void {
         this.socket.emit("getRooms");
 
-        this.emitter.once('roomList', callback);
+        this.socket.once("roomList", callback);
     }
 
-    public createRoom(data: CreateRoomDTO, callback: (data: RoomDTO) => void): void {
+    public createRoom(data: CreateRoomDTO, callback?: (data: Room) => void): void {
         this.socket.emit("createRoom", data);
 
-        this.emitter.once('roomCreated', callback);
+        if(callback) {
+            this.socket.once("roomCreated", callback);
+        }
+    }
+
+    public joinRoom(data: JoinRoomDTO, callback?: (data: Room) => void): void {
+        this.socket.emit("joinRoom", data);
+
+        if(callback) {
+            this.socket.once("joinedRoom", callback);
+        }
+    }
+
+    public leaveRoom(data: LeaveRoomDTO, callback?: () => void): void {
+        this.socket.emit("leaveRoom", data);
+
+        if(callback) {
+            this.socket.once("leftRoom", callback);
+        }
     }
 }

@@ -7,10 +7,12 @@ import LeftSign from "../../../components/LeftSign";
 import AnimatedPage from "../../../components/AnimatedPage";
 import RoomsList from "./RoomsList";
 import { AnimatePresence } from "framer-motion";
+import RoomPage from "./RoomPage/RoomPage";
 
 const CreateRoom = () => {
     const roomNameRef = useRef<HTMLInputElement | null>(null);
-    const [showRooms, setShowRooms] = useState<boolean>(false);
+    const [showRoomsList, setShowRoomsList] = useState<boolean>(false);
+    const [roomPageInfo, setRoomPageInfo] = useState<{ show: boolean, roomId?: string }>({ show: false });
 
     const { backgroundColor, setBackgroundColor, username } = useGameBackgroundContext();
     const previousBackgroundColor = useRef<string>(backgroundColor);
@@ -34,19 +36,27 @@ const CreateRoom = () => {
             name: roomName,
             leaderName: username
         },
-        () => {
-            setShowRooms(true);
+        (room) => {
+            setRoomPageInfo({ show: true, roomId: room.id });
         });
     }
 
     return (
         <>
             <AnimatePresence>
-                {!showRooms ? (
+                {showRoomsList ? (
+                    <AnimatedPage startDirection="left">
+                        <RoomsList/>
+                    </AnimatedPage>
+                ) : roomPageInfo.show ? (
+                    <AnimatedPage startDirection="left">
+                        <RoomPage roomId={roomPageInfo.roomId}/>
+                    </AnimatedPage>
+                ) : (
                     <AnimatedPage startDirection="right">
                         <div className="flex flex-col h-full bg-white rounded-game-border-2 select-none">
                             <div className="relative flex items-center justify-center bg-blue h-[148px] rounded-t-game-border-2">
-                                <ClickDiv onClick={() => setShowRooms(true)} defaultStyles="absolute top-0 left-0 cursor-pointer scale:100 active:scale-110">
+                                <ClickDiv onClick={() => setShowRoomsList(true)} defaultStyles="absolute top-0 left-0 cursor-pointer scale:100 active:scale-110">
                                     <LeftSign/>
                                 </ClickDiv>
                                 <h1 className="font-open-sans-semibold font-bold text-white text-[35px] select-none">Criar Sala</h1>
@@ -61,10 +71,6 @@ const CreateRoom = () => {
                                 />
                             </div>
                         </div>
-                    </AnimatedPage>
-                ) : (
-                    <AnimatedPage startDirection="left">
-                        <RoomsList/>
                     </AnimatedPage>
                 )}
             </AnimatePresence>

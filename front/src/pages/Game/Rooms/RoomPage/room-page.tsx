@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useGameBackgroundContext } from "../../../../contexts/gameBackgroundContext";
-import getSocketConnection from "../../../../lib/SocketConnection";
+import { useGameBackgroundContext } from "../../../../contexts/game-context";
+import getSocketConnection from "../../../../lib/socket-connection";
 import { Room } from "../../../../types/models";
-import TeamSection from "./TeamSection";
+import TeamSection from "./team-section";
 import { AnimatePresence } from "framer-motion";
-import ClickDiv from "../../../../components/ClickDiv";
-import LeftSign from "../../../../components/LeftSign";
-import AnimatedPage from "../../../../components/AnimatedPage";
-import RoomsList from "../RoomsList";
+import ClickDiv from "../../../../components/click-div";
+import LeftSign from "../../../../components/left-sign";
+import AnimatedPage from "../../../../components/animated-page";
+import RoomsList from "../rooms-list";
 import { Socket } from "socket.io-client";
 import { RoomDTO } from "../../../../types/dtos";
-import ClickButton from "../../../../components/ClickButton";
+import ClickButton from "../../../../components/click-button";
 
 interface RoomPageProps {
     roomId: string | undefined;

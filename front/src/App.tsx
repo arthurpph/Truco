@@ -1,4 +1,4 @@
-import Game from "./pages/Game/Game";
+import Game from "./pages/Game/game";
 
 const App = () => {
   return (

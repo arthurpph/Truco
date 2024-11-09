@@ -1,5 +1,5 @@
 import { Team } from "../../../../types/models";
-import PlayerCard from "./PlayerCard";
+import PlayerCard from "./player-card";
 
 const TeamSection = ({ team, backgroundColor }: { team: Team, backgroundColor: string }) => {
     return (

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import ClickButton from "../../../components/ClickButton";
-import getSocketConnection from "../../../lib/SocketConnection";
+import ClickButton from "../../../components/click-button";
+import getSocketConnection from "../../../lib/socket-connection";
 import { Room } from "../../../types/models";
-import CreateRoom from "./CreateRoom";
-import AnimatedPage from "../../../components/AnimatedPage";
-import LeftSign from "../../../components/LeftSign";
-import ClickDiv from "../../../components/ClickDiv";
+import CreateRoom from "./create-room";
+import AnimatedPage from "../../../components/animated-page";
+import LeftSign from "../../../components/left-sign";
+import ClickDiv from "../../../components/click-div";
 import Home from "../Home";
 import { AnimatePresence } from "framer-motion";
-import RoomPage from "./RoomPage/RoomPage";
-import { useGameBackgroundContext } from "../../../contexts/gameBackgroundContext";
+import RoomPage from "./RoomPage/room-page";
+import { useGameBackgroundContext } from "../../../contexts/game-context";
 
 interface showRoomInfo {
     show: boolean;

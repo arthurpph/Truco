@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import ClickButton from "../../components/ClickButton";
-import Rooms from "./Rooms/RoomsList";
-import AnimatedPage from "../../components/AnimatedPage";
-import { useGameBackgroundContext } from "../../contexts/gameBackgroundContext";
+import ClickButton from "../../components/click-button";
+import Rooms from "./Rooms/rooms-list";
+import AnimatedPage from "../../components/animated-page";
+import { useGameBackgroundContext } from "../../contexts/game-context";
 import { AnimatePresence } from "framer-motion";
 
 const Home = () => {

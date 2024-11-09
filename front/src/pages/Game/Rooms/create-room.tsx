@@ -1,13 +1,13 @@
 import  { useEffect, useRef, useState } from "react";
-import { useGameBackgroundContext } from "../../../contexts/gameBackgroundContext";
-import ClickButton from "../../../components/ClickButton";
-import getSocketConnection from "../../../lib/SocketConnection";
-import ClickDiv from "../../../components/ClickDiv";
-import LeftSign from "../../../components/LeftSign";
-import AnimatedPage from "../../../components/AnimatedPage";
-import RoomsList from "./RoomsList";
+import { useGameBackgroundContext } from "../../../contexts/game-context";
+import ClickButton from "../../../components/click-button";
+import getSocketConnection from "../../../lib/socket-connection";
+import ClickDiv from "../../../components/click-div";
+import LeftSign from "../../../components/left-sign";
+import AnimatedPage from "../../../components/animated-page";
+import RoomsList from "./rooms-list";
 import { AnimatePresence } from "framer-motion";
-import RoomPage from "./RoomPage/RoomPage";
+import RoomPage from "./RoomPage/room-page";
 
 const CreateRoom = () => {
     const roomNameRef = useRef<HTMLInputElement | null>(null);

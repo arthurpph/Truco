@@ -19,7 +19,7 @@ class Room {
 
             const timeout = setTimeout(() => {
                 roomService.removePlayer(player.getName(), this.id);
-            }, 10000);
+            }, 2000);
 
             player.getSocket().once("connectionReceived", () => {
                 clearTimeout(timeout);

@@ -72,7 +72,7 @@ class RoomService {
             return;
         }
 
-        this.updatePlayersRoomData(room)
+        this.updatePlayersRoomData(room);
     }
 
     public getRoomFromPlayerName(playerName: string): Room | null {
@@ -126,7 +126,7 @@ class RoomService {
 
         player.toggleIsReady();
 
-        if(room.getPlayers().every(player => player.getIsReady())) {
+        if(room.getNumberOfPlayers() === 4 && room.getPlayers().every(player => player.getIsReady())) {
             this.sendGameStartedMessage(room);
             return;
         }

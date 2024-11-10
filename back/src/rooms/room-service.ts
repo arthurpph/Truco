@@ -125,6 +125,12 @@ class RoomService {
         }
 
         player.toggleIsReady();
+
+        if(room.getPlayers().every(player => player.getIsReady())) {
+            this.sendGameStartedMessage(room);
+            return;
+        }
+
         this.updatePlayersRoomData(room);
     }
 
@@ -149,7 +155,7 @@ class RoomService {
         return this.getRoom(roomId) != null;
     }
 
-    public updatePlayersRoomData(room: Room, excludedPlayerId?: string): void {
+    private updatePlayersRoomData(room: Room, excludedPlayerId?: string): void {
         const roomDataUpdatedDTO: RoomDTO = room.toDTO();
 
         room.getPlayers().forEach(roomPlayer => {
@@ -159,6 +165,12 @@ class RoomService {
 
             roomPlayer.getSocket().emit("roomDataUpdated", roomDataUpdatedDTO);
         });
+    }
+
+    private sendGameStartedMessage(room: Room): void {
+        for(const player of room.getPlayers()) {
+            player.getSocket().emit("gameStarted");
+        }
     }
 }
 

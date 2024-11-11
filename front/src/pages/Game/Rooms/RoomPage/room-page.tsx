@@ -68,6 +68,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ roomId }) => {
             setRoomData(roomData as Room);
         });
 
+        socketObject.once("gameStarted", () => {
+            console.log("game started");
+        });
+
         return () => {
             socketObject.off("roomDataUpdated");
             setDefaultBackgroundColor();

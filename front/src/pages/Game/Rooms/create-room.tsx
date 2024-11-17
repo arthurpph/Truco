@@ -5,7 +5,7 @@ import getSocketConnection from "../../../lib/socket-connection";
 import ClickDiv from "../../../components/click-div";
 import LeftSign from "../../../components/left-sign";
 import AnimatedPage from "../../../components/animated-page";
-import RoomsList from "./rooms-list";
+import RoomsList from "./RoomsList/rooms-list";
 import { AnimatePresence } from "framer-motion";
 import RoomPage from "./RoomPage/room-page";
 

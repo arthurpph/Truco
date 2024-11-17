@@ -7,7 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import ClickDiv from "../../../../components/click-div";
 import LeftSign from "../../../../components/left-sign";
 import AnimatedPage from "../../../../components/animated-page";
-import RoomsList from "../rooms-list";
+import RoomsList from "../RoomsList/rooms-list";
 import { Socket } from "socket.io-client";
 import { RoomDTO } from "../../../../types/dtos";
 import ClickButton from "../../../../components/click-button";

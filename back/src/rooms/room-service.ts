@@ -53,6 +53,10 @@ class RoomService {
             throw new Error("Room with the id provided does not exist");
         }
 
+        if(room.getNumberOfPlayers() >= 4) {
+            return;
+        }
+
         room.addPlayer(player);
 
         this.updatePlayersRoomData(room, player.getId());
@@ -62,7 +66,7 @@ class RoomService {
         const room: Room | null = this.getRoom(roomId);
 
         if (!room) {
-            throw new Error(`Sala não encontrada.`);
+            throw new Error(`Sala com o especificado roomId não encontrada.`);
         }
 
         room.removePlayer(playerName);

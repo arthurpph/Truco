@@ -1,40 +1,23 @@
 import { useEffect, useState } from "react";
-import ClickButton from "../../../components/click-button";
-import getSocketConnection from "../../../lib/socket-connection";
-import { Room } from "../../../types/models";
-import CreateRoom from "./create-room";
-import AnimatedPage from "../../../components/animated-page";
-import LeftSign from "../../../components/left-sign";
-import ClickDiv from "../../../components/click-div";
-import Home from "../Home";
+import ClickButton from "../../../../components/click-button";
+import getSocketConnection from "../../../../lib/socket-connection";
+import { Room, ShowRoomInfo } from "../../../../types/models";
+import CreateRoom from "../create-room";
+import AnimatedPage from "../../../../components/animated-page";
+import LeftSign from "../../../../components/left-sign";
+import ClickDiv from "../../../../components/click-div";
+import Home from "../../home";
 import { AnimatePresence } from "framer-motion";
-import RoomPage from "./RoomPage/room-page";
-import { useGameBackgroundContext } from "../../../contexts/game-context";
-
-interface showRoomInfo {
-    show: boolean;
-    roomId?: string;
-};
+import RoomPage from "../RoomPage/room-page";
+import RoomView from "./room-view";
 
 const RoomsList = () => {
     const [rooms, setRooms] = useState<Room[]>([]);
     const [requestRoomListIntervalId, setRequestRoomListIntervalId] = useState<NodeJS.Timeout | null>(null);
 
-    const [showRoom, setShowRoom] = useState<showRoomInfo>({ show: false });
+    const [showRoom, setShowRoom] = useState<ShowRoomInfo>({ show: false });
     const [showCreateRoom, setShowCreateRoom] = useState<boolean>(false);
     const [showHome, setShowHome] = useState<boolean>(false);
-
-    const { username } = useGameBackgroundContext();
-    const socket = getSocketConnection();
-
-    const handleRoomClick = (roomId: string) => {
-        socket.joinRoom({
-            roomId,
-            playerName: username, 
-        }, (room) => {
-            setShowRoom({ show: true, roomId: room.id });
-        });
-    }
 
     const requestRoomList = () => {
         const socket = getSocketConnection();
@@ -91,20 +74,7 @@ const RoomsList = () => {
                                 <div className="w-[76%] h-full max-h-[600px] flex flex-wrap content-start overflow-auto mt-[20px] custom-scroll">
                                     {rooms.length > 0 ? (
                                         rooms.map((room) => (
-                                            <div onClick={() => handleRoomClick(room.id)} key={room.id} className="flex flex-col items-center bg-white w-[229px] h-[240px] mr-[30px] mt-[10px] rounded-game-border border-gray-300 active:border-2">
-                                                <h2 className="text-[25px] text-purple font-bold mt-2">{room.name}</h2>
-                                                <div className="flex items-center justify-center w-full h-full">
-                                                    <div className="flex flex-col items-center justify-center w-full h-full gap-4">
-                                                        <div className="bg-[url('/src/assets/avatarvazio.png')] bg-cover bg-no-repeat bg-center w-[76px] h-[76px] border-2 border-gray-400 rounded-full"></div>
-                                                        <div className="bg-[url('/src/assets/avatarvazio.png')] bg-cover bg-no-repeat bg-center w-[76px] h-[76px] border-2 border-gray-400 rounded-full"></div>
-                                                    </div>
-                                                    <span className="text-center text-gray-400 text-[25px]">VS</span>
-                                                    <div className="flex flex-col items-center justify-center w-full h-full gap-4">
-                                                        <div className="bg-[url('/src/assets/avatarvazio.png')] bg-cover bg-no-repeat bg-center w-[76px] h-[76px] border-2 border-gray-400 rounded-full"></div>
-                                                        <div className="bg-[url('/src/assets/avatarvazio.png')] bg-cover bg-no-repeat bg-center w-[76px] h-[76px] border-2 border-gray-400 rounded-full"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <RoomView room={room} setShowRoom={setShowRoom} />
                                         ))
                                     ) : (
                                         <div className="w-[80%] h-[85%] flex items-center justify-center">

@@ -14,3 +14,8 @@ export interface Room {
     name: string;
     teams: [Team, Team]
 };
+
+export interface ShowRoomInfo {
+    show: boolean;
+    roomId?: string;
+};

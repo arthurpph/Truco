@@ -1,35 +1,42 @@
 import { Socket } from "socket.io";
-import RoomService from "../rooms/room-service";
-import { CreateRoomDTO } from "../dtos/create-room-dto";
-import RoomPlayer from "../rooms/room-player";
-import { GetRoomDTO } from "../dtos/get-room-dto";
-import { JoinRoomDTO } from "../dtos/join-room-dto";
-import Room from "../rooms/room";
-import { LeaveRoomDTO } from "../dtos/leave-room-dto";
-import { RoomPlayerRequestDTO } from "../dtos/room-player-dto";
+import { CreateRoomDTO } from "../dto/create-room-dto";
+import RoomPlayer from "../room/room-player";
+import { GetRoomDTO } from "../dto/get-room-dto";
+import { JoinRoomDTO } from "../dto/join-room-dto";
+import Room from "../room/room";
+import { LeaveRoomDTO } from "../dto/leave-room-dto";
+import { RoomPlayerRequestDTO } from "../dto/room-player-dto";
+import { RoomService } from "../room/room-service";
+import { PlayerService } from "../player/player-service";
+import { RoomServiceImpl } from "../room/room-service-impl";
+import { PlayerServiceImpl } from "../player/player-service-impl";
+
+const roomService: RoomService = new RoomServiceImpl();
+const playerService: PlayerService = new PlayerServiceImpl(roomService);
+roomService.setPlayerService(playerService);
 
 const roomsMessages = (socket: Socket): void => {
     socket.on('getRoom', (data: GetRoomDTO): void => {
-        const room = RoomService.getRoom(data.id);
+        const room = roomService.get(data.id);
         socket.emit('roomInfo', room ? room.toDTO() : { error: 'Room not found' });
     });
 
     socket.on('getRooms', (): void => {
-        const roomsArray = [...RoomService.getRooms()];
+        const roomsArray = [...roomService.getAll()];
         socket.emit('roomList', roomsArray.map(room => room.toDTO()));
     });
 
     socket.on('createRoom', (data: CreateRoomDTO): void => {
         // if(RoomService.isPlayerInARoom())
 
-        const id: string = RoomService.addRoom(data.name, new RoomPlayer(data.leaderName, socket));
+        const id: string = roomService.create(data, socket);
 
-        socket.emit("roomCreated", RoomService.getRoom(id)?.toDTO());
+        socket.emit("roomCreated", roomService.get(id)?.toDTO());
     });
 
     socket.on('joinRoom', (data: JoinRoomDTO): void => {
         const roomId = data.roomId;
-        const room: Room | null = RoomService.getRoom(roomId);
+        const room: Room | null = roomService.get(roomId);
 
         if(!room) {
             socket.emit("error", {
@@ -45,14 +52,14 @@ const roomsMessages = (socket: Socket): void => {
             return;
         }
 
-        RoomService.addPlayer(new RoomPlayer(data.playerName, socket), roomId);
+        playerService.create(new RoomPlayer(data.playerName, socket), roomId);
 
         socket.emit("joinedRoom", room.toDTO());
     });
 
     socket.on('leaveRoom', (data: LeaveRoomDTO): void => {
         const roomId = data.roomId;
-        const doesRoomExist: boolean = RoomService.doesRoomExist(roomId);
+        const doesRoomExist: boolean = roomService.doesRoomExist(roomId);
 
         if(!doesRoomExist) {
             socket.emit("error", {
@@ -68,7 +75,7 @@ const roomsMessages = (socket: Socket): void => {
             return;
         }
 
-        RoomService.removePlayer(data.playerName, roomId);
+        playerService.remove(data.playerName, roomId);
 
         socket.emit("leftRoom");
     });
@@ -82,7 +89,7 @@ const roomsMessages = (socket: Socket): void => {
         }
 
         const playerName: string = data.name;
-        const room: Room | null = RoomService.getRoomFromPlayerName(data.name);
+        const room: Room | null = playerService.getRoomFromPlayerName(data.name);
 
         if(!room) {
             socket.emit("error", {
@@ -91,7 +98,7 @@ const roomsMessages = (socket: Socket): void => {
             return;
         }
 
-        RoomService.toggleIsReady(playerName, room.getId());
+        playerService.toggleReadyState(playerName, room.id);
     });
 };
 

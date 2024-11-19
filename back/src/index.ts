@@ -22,8 +22,7 @@ const loadListeners = () => {
 
     fs.readdirSync(listenersDir).forEach((file) => {
       if (file.endsWith('.ts')) { 
-        const listenerModule = require(path.join(listenersDir, file)); 
-        const listener = listenerModule.default;
+        const listener = require(path.join(listenersDir, file)).default; 
         const listenerName = path.basename(file, path.extname(file)); 
         listeners[listenerName] = listener; 
       }

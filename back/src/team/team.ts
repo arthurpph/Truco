@@ -1,25 +1,14 @@
 import { v4 as uuidv4 } from "uuid";
-import RoomPlayer from "./room-player";
-import { TeamDTO } from "../dtos/team-dto";
+import RoomPlayer from "../room/room-player";
+import { TeamDTO } from "../dto/team-dto";
 import constants from '../data/constants.json';
 
 class Team {
-    private static generateId(): string {
-        let id: string = uuidv4();
-        while(Team.IDS.includes(id)) {
-            id = uuidv4();
-        }
-        return id;
-    }
-
-    private static IDS: string[] = [];
-
     private id: string;
     private players: Set<RoomPlayer>;
 
     constructor() {
-        this.id = Team.generateId();
-        Team.IDS.push(this.id);
+        this.id = uuidv4();
         this.players = new Set();
     }
 
